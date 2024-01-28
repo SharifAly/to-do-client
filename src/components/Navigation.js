@@ -3,6 +3,15 @@ import img from "../pictures/tiger-3887020_1280.jpg";
 import { Link } from "react-router-dom";
 
 const Navigation = () => {
+  const refreshPage = () => {
+    window.location.reload(false);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    alert("Logged out & Token removed");
+    refreshPage();
+  };
+
   return (
     <>
       <div className="list-container flex w-screen justify-between items-center py-2">
@@ -15,17 +24,28 @@ const Navigation = () => {
             <li className="cursor-pointer">To-Do's</li>
           </Link>
           <Link to="/add">
-            <li className="cursor-pointer">Login</li>
+            <li className={"cursor-pointer"}>Create</li>
           </Link>
-          {/* <Link>
-            <li className="cursor-pointer">Register</li>
-          </Link> */}
         </ul>
         <div className="profil-container flex w-full justify-end me-20">
-          <Link className="flex items-center" to="/login">
-            <button className="me-10">Sing in</button>
-          </Link>
-          <img className="w-10" src={img} alt="profile_picture" />
+          {localStorage.getItem("token") ? (
+            <>
+              <div className="flex items-center">
+                <Link to="/update">
+                  <button className="me-10">Update</button>
+                </Link>
+                <Link to="/delete">
+                  <button className="me-10">Delete</button>
+                </Link>
+                <button onClick={handleLogout}>Logout</button>
+              </div>
+              <img className="w-10" src={img} alt="profile_picture" />
+            </>
+          ) : (
+            <Link to="/login">
+              <button className="me-10">Sing in</button>
+            </Link>
+          )}
         </div>
       </div>
     </>
