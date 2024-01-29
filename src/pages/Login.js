@@ -1,10 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+// import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,12 +20,11 @@ const Login = () => {
     axios
       .post(url, data)
       .then((res) => {
-        // setEmail("");
-        // setPassword("");
-
         console.log(res);
 
         localStorage.setItem("token", res.data.token);
+        navigate("/");
+        window.location.reload();
       })
       .catch((error) => {
         console.error("There was an error!", error);
@@ -31,7 +34,7 @@ const Login = () => {
   return (
     <>
       <form
-        className={localStorage.getItem("token") ? "hide" : ""}
+        className={`${localStorage.getItem("token") ? "hide" : ""}`}
         onSubmit={handleSubmit}
       >
         <input
